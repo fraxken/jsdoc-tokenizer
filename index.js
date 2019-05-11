@@ -7,13 +7,11 @@ const BufferString = require("./src/bufferstring");
 const TOKENS = Object.freeze({
     KEYWORD: Symbol("KEYWORD"),
     IDENTIFIER: Symbol("IDENTIFIER"),
-    SYMBOL: Symbol("SYMBOL"),
-    END: Symbol("ENDLINE")
+    SYMBOL: Symbol("SYMBOL")
 });
 
 // CONSTANTS
 const CHAR_SPACE = " ".charCodeAt(0);
-const CHAR_ENDLINE = "\n".charCodeAt(0);
 const CHAR_EX = stringToChar("@example");
 const CHAR_AROBASE = "@".charCodeAt(0);
 const CHAR_STAR = "*".charCodeAt(0);
@@ -25,7 +23,7 @@ const WIDE_CHARS = asciiSet(
     [97, 122], // A-Z
     95, 36, 39, 34, CHAR_AROBASE, ".".charCodeAt(0));
 
-const SYMBOLS = new Set(["{", "}", "(", ")", "[", "]", "!", "?", "="].map((char) => char.charCodeAt(0)));
+const SYMBOLS = new Set(["{", "}", "(", ")", "[", "]", "!", "?", "=", ";"].map((char) => char.charCodeAt(0)));
 const KEYWORDS = jsdocKeywords.map((key) => stringToChar(key));
 
 /**
@@ -96,10 +94,6 @@ function* scan(buf) {
             const currValue = t8.currValue;
             t8.reset();
             yield [TOKENS.IDENTIFIER, currValue];
-        }
-
-        if (char === CHAR_ENDLINE) {
-            yield [TOKENS.END, null];
         }
 
         if (SYMBOLS.has(char)) {

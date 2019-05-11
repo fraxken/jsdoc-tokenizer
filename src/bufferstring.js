@@ -14,10 +14,6 @@ class BufferString {
         this.currLen = 0;
     }
 
-    reAllocate() {
-
-    }
-
     /**
      * @method add
      * @memberof BufferString#
@@ -43,7 +39,7 @@ class BufferString {
      * @returns {Boolean}
      */
     compare(u8) {
-        if (this.currLen === 0 || this.currLen !== u8.byteLength) {
+        if (this.u8Arr.byteLength !== u8.byteLength) {
             return false;
         }
 

@@ -33,7 +33,7 @@ const KEYWORDS = jsdocKeywords.map((key) => stringToChar(key));
  */
 function isKeyword(bufString) {
     for (let id = 0; id < KEYWORDS.length; id++) {
-        if (bufString.compare(KEYWORDS[id])) {
+        if (compareU8Arr(bufString.currValue, KEYWORDS[id])) {
             return [true, KEYWORDS[id]];
         }
     }
@@ -75,6 +75,11 @@ function* scan(buf) {
         }
 
         if (t8.length > 0) {
+            if (char === CHAR_SPACE) {
+                t8.add(char);
+                continue;
+            }
+
             const [currIsKeyword, u8Keyword] = isKeyword(t8);
             if (currIsKeyword) {
                 if (!inExample && compareU8Arr(CHAR_EX, u8Keyword)) {
@@ -83,11 +88,6 @@ function* scan(buf) {
 
                 t8.reset();
                 yield [TOKENS.KEYWORD, u8Keyword];
-                continue;
-            }
-
-            if (char === CHAR_SPACE) {
-                t8.add(char);
                 continue;
             }
 

@@ -44,8 +44,7 @@ Available tokens are described by the following interface:
 interface Tokens {
     KEYWORD: Symbol,
     IDENTIFIER: Symbol,
-    SYMBOL: Symbol,
-    END: Symbol
+    SYMBOL: Symbol
 }
 ```
 

@@ -30,17 +30,17 @@ const KEYWORDS = jsdocKeywords.map((key) => stringToChar(key));
 
 /**
  * @func isKeyword
- * @param {!BufferString} t8 BufferString object
- * @returns {[Boolean, (null | Uint8Array)]}
+ * @param {!Uint8Array} u8Keyword keyword as uint8array
+ * @returns {Boolean}
  */
-function isKeyword(t8) {
+function isKeyword(u8Keyword) {
     for (let id = 0; id < KEYWORDS.length; id++) {
-        if (compareU8Arr(t8.currValue, KEYWORDS[id])) {
-            return [true, KEYWORDS[id]];
+        if (compareU8Arr(u8Keyword, KEYWORDS[id])) {
+            return true;
         }
     }
 
-    return [false, null];
+    return false;
 }
 
 /**
@@ -88,15 +88,17 @@ function* scan(buf) {
         }
 
         if (t8.length > 0) {
-            const [currIsKeyword, u8Keyword] = isKeyword(t8);
+            const currValue = t8.currValue;
+            const currIsKeyword = isKeyword(currValue);
+
             if (currIsKeyword) {
-                if (compareU8Arr(CHAR_EX, u8Keyword)) {
+                if (compareU8Arr(CHAR_EX, currValue)) {
                     skipScan = true;
                     skipSymbol = CHAR_AROBASE;
                 }
 
                 t8.reset();
-                yield [TOKENS.KEYWORD, u8Keyword];
+                yield [TOKENS.KEYWORD, currValue];
             }
 
             if (char === CHAR_SPACE) {
@@ -106,7 +108,7 @@ function* scan(buf) {
                 continue;
             }
 
-            yield [TOKENS.IDENTIFIER, t8.currValue];
+            yield [TOKENS.IDENTIFIER, currValue];
             t8.reset();
         }
 

@@ -2,6 +2,7 @@
     "extends": "@slimio/eslint-config",
     "rules": {
         "no-inline-comments": "off",
-        "line-comment-position": "off"
+        "line-comment-position": "off",
+        "no-extra-parens": "off"
     }
 }

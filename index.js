@@ -2,7 +2,7 @@
 const { readFileSync } = require("fs");
 
 // Require Internal Dependencies
-const { asciiSet, stringToChar } = require("./src/utils");
+const { asciiSet, stringToChar, compareU8Arr } = require("./src/utils");
 const jsdocKeywords = require("./src/keywords");
 const BufferString = require("./src/bufferstring");
 
@@ -17,14 +17,18 @@ const TOKENS = Object.freeze({
 // CONSTANTS
 const CHAR_SPACE = " ".charCodeAt(0);
 const CHAR_ENDLINE = "\n".charCodeAt(0);
+const CHAR_EX = stringToChar("@example");
+const CHAR_AROBASE = "@".charCodeAt(0);
+const CHAR_STAR = "*".charCodeAt(0);
+const CHAR_SLASH = "/".charCodeAt(0);
 
 const WIDE_CHARS = asciiSet(
     [48, 57], // 0-9
     [65, 90], // a-z
     [97, 122], // A-Z
-    95, 36, 39, 34, "@".charCodeAt(0));
+    95, 36, 39, 34, CHAR_AROBASE, ".".charCodeAt(0));
 
-const SYMBOLS = new Set(["{", "}", "(", ")", "!", "?", "="].map((char) => char.charCodeAt(0)));
+const SYMBOLS = new Set(["{", "}", "(", ")", "[", "]", "!", "?", "="].map((char) => char.charCodeAt(0)));
 const KEYWORDS = jsdocKeywords.map((key) => stringToChar(key));
 
 /**
@@ -44,15 +48,32 @@ function isKeyword(bufString) {
 
 /**
  * @generator
- * @func jsdocTokenizer
+ * @func scan
  * @param {!Buffer} buf buffer
  * @returns {IterableIterator<any>}
  */
-function* jsdocTokenizer(buf) {
+function* scan(buf) {
     const t8 = new BufferString();
+    let inExample = false;
 
     for (let id = 0; id < buf.length; id++) {
         const char = buf[id];
+        if (inExample) {
+            const isEndBlock = char === CHAR_SLASH && buf[id - 1] === CHAR_STAR;
+            if (char === CHAR_AROBASE || isEndBlock) {
+                inExample = false;
+                const currValue = t8.currValue;
+                t8.reset();
+                yield [TOKENS.IDENTIFIER, currValue];
+                if (isEndBlock) {
+                    continue;
+                }
+            }
+
+            t8.add(char);
+            continue;
+        }
+
         if (WIDE_CHARS.has(char)) {
             t8.add(char);
             continue;
@@ -61,6 +82,10 @@ function* jsdocTokenizer(buf) {
         if (t8.length > 0) {
             const [currIsKeyword, u8Keyword] = isKeyword(t8);
             if (currIsKeyword) {
+                if (!inExample && compareU8Arr(CHAR_EX, u8Keyword)) {
+                    inExample = true;
+                }
+
                 t8.reset();
                 yield [TOKENS.KEYWORD, u8Keyword];
                 continue;
@@ -86,13 +111,4 @@ function* jsdocTokenizer(buf) {
     }
 }
 
-const bDoc = readFileSync("./test/doc.js");
-for (const [token, value] of jsdocTokenizer(bDoc)) {
-    if (value instanceof Uint8Array) {
-        console.log(token, String.fromCharCode(...value));
-    }
-    else {
-        const tValue = typeof value === "number" ? String.fromCharCode(value) : value;
-        console.log(token, tValue);
-    }
-}
+module.exports = { scan, TOKENS };

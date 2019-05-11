@@ -19,10 +19,35 @@ $ yarn add jsdoc-tokenizer
 ```
 
 ## Usage example
-TBC
+```js
+const { scan, TOKENS } = require("jsdoc-tokenizer");
+
+const it = scan(Buffer.from("/** @type {String} **/"));
+for (const [token, value] of it) {
+    if (value instanceof Uint8Array) {
+        console.log(token, String.fromCharCode(...value));
+    }
+    else {
+        const tValue = typeof value === "number" ? String.fromCharCode(value) : value;
+        console.log(token, tValue);
+    }
+}
+```
 
 ## API
-TBC
+### scan(buf: Buffer): IterableIterator< [Symbol, Uint8Array | number | null] >
+Scan (tokenize) JSDoc block.
+
+### TOKENS
+Available tokens are:
+```js
+const TOKENS = Object.freeze({
+    KEYWORD: Symbol("KEYWORD"),
+    IDENTIFIER: Symbol("IDENTIFIER"),
+    SYMBOL: Symbol("SYMBOL"),
+    END: Symbol("ENDLINE")
+});
+```
 
 ## License
 MIT

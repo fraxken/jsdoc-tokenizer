@@ -1,5 +1,5 @@
 {
-    "name": "@slimio/jsdoc-tokenizer",
+    "name": "jsdoc-tokenizer",
     "version": "1.0.0",
     "description": "Tokenize (Scan) JSDoc buffer",
     "main": "index.js",

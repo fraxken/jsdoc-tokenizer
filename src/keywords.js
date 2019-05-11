@@ -11,5 +11,13 @@ module.exports = [
     "@return",
     "@property",
     "@typedef",
-    "@type"
+    "@type",
+    "@version",
+    "@member",
+    "@static",
+    "@template",
+    "@generator",
+    "@async",
+    "@public",
+    "@private"
 ];

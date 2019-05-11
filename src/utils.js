@@ -28,4 +28,24 @@ function stringToChar(str) {
     return new Uint8Array([...str].map((str) => str.charCodeAt(0)));
 }
 
-module.exports = { asciiSet, stringToChar };
+/**
+ * @func compareU8Arr
+ * @param {!Uint8Array} arrL left arr
+ * @param {!Uint8Array} arrR right arr
+ * @returns {Boolean}
+ */
+function compareU8Arr(arrL, arrR) {
+    if (arrL.byteLength !== arrR.byteLength) {
+        return false;
+    }
+
+    for (let id = 0; id < arrL.length; id++) {
+        if (arrL[id] !== arrR[id]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+module.exports = { asciiSet, stringToChar, compareU8Arr };

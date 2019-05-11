@@ -3,7 +3,7 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/SlimIO/is/commit-activity)
 ![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)
 
-Tokenize (Scan) JSDoc buffer
+Tokenizer (Scanner) for JSDoc block.
 
 ## Requirements
 - Node.js v10 or higher
@@ -36,18 +36,20 @@ for (const [token, value] of it) {
 
 ## API
 ### scan(buf: Buffer): IterableIterator< [Symbol, Uint8Array | number | null] >
-Scan (tokenize) JSDoc block.
+Scan (tokenize) JSDoc block. The scanner only take single instance of block (not build to detect start and end). To extract JSDoc block as buffer, please take a look at [jsdoc-extractor](https://github.com/fraxken/jsdoc-extractor).
 
 ### TOKENS
-Available tokens are:
-```js
-const TOKENS = Object.freeze({
-    KEYWORD: Symbol("KEYWORD"),
-    IDENTIFIER: Symbol("IDENTIFIER"),
-    SYMBOL: Symbol("SYMBOL"),
-    END: Symbol("ENDLINE")
-});
+Available tokens are described by the following interface:
+```ts
+interface Tokens {
+    KEYWORD: Symbol,
+    IDENTIFIER: Symbol,
+    SYMBOL: Symbol,
+    END: Symbol
+}
 ```
+
+Tokens are exported in the module.
 
 ## License
 MIT

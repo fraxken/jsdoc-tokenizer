@@ -13,7 +13,15 @@
         "type": "git",
         "url": "git+https://github.com/fraxken/jsdoc_tokenizer.git"
     },
-    "keywords": [],
+    "keywords": [
+        "jsdoc",
+        "token",
+        "tokenizer",
+        "lexer",
+        "parser",
+        "scanner",
+        "scan"
+    ],
     "author": "fraxken",
     "license": "MIT",
     "bugs": {

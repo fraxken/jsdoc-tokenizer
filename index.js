@@ -16,6 +16,8 @@ const CHAR_EX = stringToChar("@example");
 const CHAR_AROBASE = "@".charCodeAt(0);
 const CHAR_STAR = "*".charCodeAt(0);
 const CHAR_SLASH = "/".charCodeAt(0);
+const CHAR_BRACKET_OPEN = "{".charCodeAt(0);
+const CHAR_BRACKET_CLOSE = "}".charCodeAt(0);
 
 const WIDE_CHARS = asciiSet(
     [48, 57], // 0-9
@@ -49,14 +51,15 @@ function isKeyword(bufString) {
  */
 function* scan(buf) {
     const t8 = new BufferString();
-    let inExample = false;
+    let skipSymbol = CHAR_AROBASE;
+    let skipScan = false;
 
     for (let id = 0; id < buf.length; id++) {
         const char = buf[id];
-        if (inExample) {
+        if (skipScan) {
             const isEndBlock = char === CHAR_SLASH && buf[id - 1] === CHAR_STAR;
-            if (char === CHAR_AROBASE || isEndBlock) {
-                inExample = false;
+            if (char === skipSymbol || isEndBlock) {
+                skipScan = false;
                 const currValue = t8.currValue;
                 t8.reset();
                 yield [TOKENS.IDENTIFIER, currValue];
@@ -82,8 +85,9 @@ function* scan(buf) {
 
             const [currIsKeyword, u8Keyword] = isKeyword(t8);
             if (currIsKeyword) {
-                if (!inExample && compareU8Arr(CHAR_EX, u8Keyword)) {
-                    inExample = true;
+                if (!skipScan && compareU8Arr(CHAR_EX, u8Keyword)) {
+                    skipScan = true;
+                    skipSymbol = CHAR_AROBASE;
                 }
 
                 t8.reset();
@@ -96,6 +100,10 @@ function* scan(buf) {
         }
 
         if (SYMBOLS.has(char)) {
+            if (char === CHAR_BRACKET_OPEN) {
+                skipScan = true;
+                skipSymbol = CHAR_BRACKET_CLOSE;
+            }
             yield [TOKENS.SYMBOL, char];
         }
     }

@@ -1,6 +1,3 @@
-// Require Node.js Dependencies
-const { readFileSync } = require("fs");
-
 // Require Internal Dependencies
 const { asciiSet, stringToChar, compareU8Arr } = require("./src/utils");
 const jsdocKeywords = require("./src/keywords");

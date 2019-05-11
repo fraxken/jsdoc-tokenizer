@@ -14,6 +14,10 @@ class BufferString {
         this.currLen = 0;
     }
 
+    reAllocate() {
+
+    }
+
     /**
      * @method add
      * @memberof BufferString#
@@ -21,8 +25,11 @@ class BufferString {
      * @returns {void}
      */
     add(char) {
-        if (this.currLen === 255) {
-            throw new Error("Maximum length of '255' exceed");
+        // If size exceed, re-allocate a new TypedArray
+        if (this.currLen === this.u8Arr.byteLength) {
+            const t8 = new Uint8Array(this.u8Arr.byteLength * 2);
+            t8.set(this.u8Arr);
+            this.u8Arr = t8;
         }
 
         this.u8Arr[this.currLen] = char;

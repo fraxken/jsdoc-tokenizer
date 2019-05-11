@@ -88,12 +88,11 @@ function* scan(buf) {
 
                 t8.reset();
                 yield [TOKENS.KEYWORD, u8Keyword];
-                continue;
             }
-
-            const currValue = t8.currValue;
-            t8.reset();
-            yield [TOKENS.IDENTIFIER, currValue];
+            else {
+                yield [TOKENS.IDENTIFIER, t8.currValue];
+                t8.reset();
+            }
         }
 
         if (SYMBOLS.has(char)) {

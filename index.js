@@ -30,12 +30,12 @@ const KEYWORDS = jsdocKeywords.map((key) => stringToChar(key));
 
 /**
  * @func isKeyword
- * @param {!BufferString} bufString BufferString object
- * @returns {boolean}
+ * @param {!BufferString} t8 BufferString object
+ * @returns {[Boolean, (null | Uint8Array)]}
  */
-function isKeyword(bufString) {
+function isKeyword(t8) {
     for (let id = 0; id < KEYWORDS.length; id++) {
-        if (compareU8Arr(bufString.currValue, KEYWORDS[id])) {
+        if (compareU8Arr(t8.currValue, KEYWORDS[id])) {
             return [true, KEYWORDS[id]];
         }
     }
@@ -44,28 +44,38 @@ function isKeyword(bufString) {
 }
 
 /**
+ * @typedef {Object} TokenRow
+ * @property {Symbol} token
+ * @property {Uint8Array | number | null} value
+ */
+
+/**
  * @generator
  * @func scan
  * @param {!Buffer} buf buffer
- * @returns {IterableIterator<any>}
+ * @returns {IterableIterator<TokenRow>}
  */
 function* scan(buf) {
     const t8 = new BufferString();
     let skipSymbol = CHAR_AROBASE;
+    let skipShowSymbol = false;
     let skipScan = false;
 
     for (let id = 0; id < buf.length; id++) {
         const char = buf[id];
         if (skipScan) {
-            const isEndBlock = char === CHAR_SLASH && buf[id - 1] === CHAR_STAR;
-            if (char === skipSymbol || isEndBlock) {
+            if (char === skipSymbol || (char === CHAR_SLASH && buf[id - 1] === CHAR_STAR)) {
                 skipScan = false;
                 const currValue = t8.currValue;
                 t8.reset();
                 yield [TOKENS.IDENTIFIER, currValue];
-                if (isEndBlock) {
-                    continue;
+
+                if (skipShowSymbol) {
+                    yield [TOKENS.SYMBOL, skipSymbol];
+                    skipShowSymbol = false;
                 }
+
+                continue;
             }
 
             t8.add(char);
@@ -78,14 +88,9 @@ function* scan(buf) {
         }
 
         if (t8.length > 0) {
-            if (char === CHAR_SPACE) {
-                t8.add(char);
-                continue;
-            }
-
             const [currIsKeyword, u8Keyword] = isKeyword(t8);
             if (currIsKeyword) {
-                if (!skipScan && compareU8Arr(CHAR_EX, u8Keyword)) {
+                if (compareU8Arr(CHAR_EX, u8Keyword)) {
                     skipScan = true;
                     skipSymbol = CHAR_AROBASE;
                 }
@@ -93,16 +98,23 @@ function* scan(buf) {
                 t8.reset();
                 yield [TOKENS.KEYWORD, u8Keyword];
             }
-            else {
-                yield [TOKENS.IDENTIFIER, t8.currValue];
-                t8.reset();
+
+            if (char === CHAR_SPACE) {
+                if (t8.length > 0) {
+                    t8.add(char);
+                }
+                continue;
             }
+
+            yield [TOKENS.IDENTIFIER, t8.currValue];
+            t8.reset();
         }
 
         if (SYMBOLS.has(char)) {
             if (char === CHAR_BRACKET_OPEN) {
                 skipScan = true;
                 skipSymbol = CHAR_BRACKET_CLOSE;
+                skipShowSymbol = true;
             }
             yield [TOKENS.SYMBOL, char];
         }

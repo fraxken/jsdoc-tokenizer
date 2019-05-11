@@ -1,4 +1,7 @@
 module.exports = [
+    "@class",
+    "@classdesc",
+    "@extends",
     "@constructor",
     "@memberof",
     "@param",

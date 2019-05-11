@@ -1,0 +1,43 @@
+{
+    "name": "@slimio/jsdoc-tokenizer",
+    "version": "1.0.0",
+    "description": "Tokenize (Scan) JSDoc buffer",
+    "main": "index.js",
+    "scripts": {
+        "prepublishOnly": "pkg-ok",
+        "test": "ava --verbose",
+        "coverage": "nyc npm test",
+        "report": "nyc report --reporter=html"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fraxken/jsdoc_tokenizer.git"
+    },
+    "keywords": [],
+    "author": "fraxken",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/fraxken/jsdoc_tokenizer/issues"
+    },
+    "homepage": "https://github.com/fraxken/jsdoc_tokenizer#readme",
+    "dependencies": {},
+    "devDependencies": {
+        "@commitlint/cli": "^7.6.1",
+        "@commitlint/config-conventional": "^7.6.0",
+        "@slimio/eslint-config": "^2.0.4",
+        "ava": "^1.4.1",
+        "eslint": "^5.16.0",
+        "husky": "^2.2.0",
+        "pkg-ok": "^2.3.1",
+        "nyc": "^14.1.1"
+    },
+    "engines": {
+        "node": ">=10"
+    },
+    "husky": {
+        "hooks": {
+            "pre-push": "npm test",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+        }
+    }
+}

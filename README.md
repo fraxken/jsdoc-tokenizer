@@ -6,7 +6,7 @@
 ![size](https://img.shields.io/bundlephobia/min/jsdoc-tokenizer.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/fraxken/jsdoc-tokenizer/badge.svg?targetFile=package.json)](https://snyk.io/test/github/fraxken/jsdoc-tokenizer?targetFile=package.json)
 
-Tokenizer (Scanner) for JSDoc block.
+Tokenizer (Scanner) for JSDoc. This project only operate on/with Node.js Buffer and Uint8Array (No conversion to String required).
 
 ## Requirements
 - Node.js v10 or higher

@@ -1,4 +1,4 @@
-// COSNTANTS
+// CONSTANTS
 const U8_LEN = 255;
 const C_SPACE = " ".charCodeAt(0);
 
@@ -39,7 +39,7 @@ class BufferString {
      * @returns {Boolean}
      */
     compare(u8) {
-        if (this.u8Arr.byteLength !== u8.byteLength) {
+        if (this.currLen === 0 || this.currLen !== u8.byteLength) {
             return false;
         }
 

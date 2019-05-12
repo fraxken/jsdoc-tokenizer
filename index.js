@@ -1,5 +1,5 @@
 // Require Internal Dependencies
-const { asciiSet, stringToChar, compareU8Arr } = require("./src/utils");
+const { asciiSet, stringToChar } = require("./src/utils");
 const jsdocKeywords = require("./src/keywords");
 const BufferString = require("./src/bufferstring");
 
@@ -35,12 +35,12 @@ const KEYWORDS = jsdocKeywords.map((key) => stringToChar(key));
 
 /**
  * @func isKeyword
- * @param {!Uint8Array} u8Keyword keyword as uint8array
+ * @param {!BufferString} t8 keyword as uint8array
  * @returns {Boolean}
  */
-function isKeyword(u8Keyword) {
+function isKeyword(t8) {
     for (let id = 0; id < KEYWORDS.length; id++) {
-        if (compareU8Arr(u8Keyword, KEYWORDS[id])) {
+        if (t8.compare(KEYWORDS[id])) {
             return true;
         }
     }
@@ -93,17 +93,14 @@ function* scan(buf) {
         }
 
         if (t8.length > 0) {
-            const currValue = t8.currValue;
-            const currIsKeyword = isKeyword(currValue);
-
-            if (currIsKeyword) {
-                if (compareU8Arr(CHAR_EX, currValue)) {
+            if (isKeyword(t8)) {
+                if (t8.compare(CHAR_EX)) {
                     skipScan = true;
                     skipSymbol = CHAR_AROBASE;
                 }
 
+                yield [TOKENS.KEYWORD, t8.currValue];
                 t8.reset();
-                yield [TOKENS.KEYWORD, currValue];
             }
 
             if (char === CHAR_SPACE) {
@@ -113,7 +110,7 @@ function* scan(buf) {
                 continue;
             }
 
-            yield [TOKENS.IDENTIFIER, currValue];
+            yield [TOKENS.IDENTIFIER, t8.currValue];
             t8.reset();
         }
 

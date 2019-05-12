@@ -23,9 +23,14 @@ const WIDE_CHARS = asciiSet(
     [48, 57], // 0-9
     [65, 90], // a-z
     [97, 122], // A-Z
-    95, 36, 39, 34, CHAR_AROBASE, ".".charCodeAt(0));
+    95, 36, 39, 34,
+    "<".charCodeAt(0),
+    ">".charCodeAt(0),
+    CHAR_AROBASE,
+    ".".charCodeAt(0)
+);
 
-const SYMBOLS = new Set(["{", "}", "(", ")", "[", "]", "!", "?", "=", ";"].map((char) => char.charCodeAt(0)));
+const SYMBOLS = new Set(["{", "}", "(", ")", "[", "]", "!", "?", "=", ";", "\n"].map((char) => char.charCodeAt(0)));
 const KEYWORDS = jsdocKeywords.map((key) => stringToChar(key));
 
 /**

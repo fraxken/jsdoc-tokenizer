@@ -2,6 +2,9 @@
 ![version](https://img.shields.io/badge/version-1.0.0-blue.svg)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/SlimIO/is/commit-activity)
 ![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)
+![dep](https://img.shields.io/david/fraxken/jsdoc-tokenizer.svg)
+![size](https://img.shields.io/bundlephobia/min/jsdoc-tokenizer.svg)
+[![Known Vulnerabilities](https://snyk.io/test/github/fraxken/jsdoc-tokenizer/badge.svg?targetFile=package.json)](https://snyk.io/test/github/fraxken/jsdoc-tokenizer?targetFile=package.json)
 
 Tokenizer (Scanner) for JSDoc block.
 

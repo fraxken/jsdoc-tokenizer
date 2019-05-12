@@ -69,9 +69,10 @@ function* scan(buf) {
     for (let id = 0; id < buf.length; id++) {
         const char = buf[id];
         if (skipScan) {
-            if (char === skipSymbol || (char === CHAR_SLASH && buf[id - 1] === CHAR_STAR)) {
+            const isEndBlock = char === CHAR_SLASH && buf[id - 1] === CHAR_STAR;
+            if (char === skipSymbol || isEndBlock) {
                 skipScan = false;
-                const currValue = t8.currValue;
+                const currValue = isEndBlock ? t8.currValue.slice(0, -2) : t8.currValue;
                 t8.reset();
                 yield [TOKENS.IDENTIFIER, currValue];
 
@@ -93,7 +94,8 @@ function* scan(buf) {
         }
 
         if (t8.length > 0) {
-            if (isKeyword(t8)) {
+            const isKw = isKeyword(t8);
+            if (isKw) {
                 if (t8.compare(CHAR_EX)) {
                     skipScan = true;
                     skipSymbol = CHAR_AROBASE;
@@ -110,8 +112,10 @@ function* scan(buf) {
                 continue;
             }
 
-            yield [TOKENS.IDENTIFIER, t8.currValue];
-            t8.reset();
+            if (!isKw) {
+                yield [TOKENS.IDENTIFIER, t8.currValue];
+                t8.reset();
+            }
         }
 
         if (SYMBOLS.has(char)) {

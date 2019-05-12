@@ -125,4 +125,4 @@ function* scan(buf) {
     }
 }
 
-module.exports = { scan, TOKENS };
+module.exports = Object.freeze({ scan, TOKENS });

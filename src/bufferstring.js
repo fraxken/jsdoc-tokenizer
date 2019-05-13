@@ -1,5 +1,4 @@
 // CONSTANTS
-const U8_LEN = 255;
 const C_SPACE = " ".charCodeAt(0);
 
 /**
@@ -10,7 +9,7 @@ class BufferString {
      * @constructor
      */
     constructor() {
-        this.u8Arr = new Uint8Array(U8_LEN);
+        this.u8Arr = new Uint8Array(BufferString.DEFAULT_LEN);
         this.currLen = 0;
     }
 
@@ -81,9 +80,11 @@ class BufferString {
      * @returns {void}
      */
     reset() {
-        this.u8Arr = new Uint8Array(U8_LEN);
+        this.u8Arr = new Uint8Array(BufferString.DEFAULT_LEN);
         this.currLen = 0;
     }
 }
+
+BufferString.DEFAULT_LEN = 255;
 
 module.exports = BufferString;

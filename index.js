@@ -13,6 +13,9 @@ const TOKENS = Object.freeze({
 // CONSTANTS
 const CHAR_SPACE = " ".charCodeAt(0);
 const CHAR_EX = stringToChar("@example");
+const CHAR_DESC = stringToChar("@desc");
+const CHAR_DESCRIPTION = stringToChar("@description");
+
 const CHAR_AROBASE = "@".charCodeAt(0);
 const CHAR_STAR = "*".charCodeAt(0);
 const CHAR_SLASH = "/".charCodeAt(0);
@@ -96,7 +99,7 @@ function* scan(buf) {
         if (t8.length > 0) {
             const isKw = isKeyword(t8);
             if (isKw) {
-                if (t8.compare(CHAR_EX)) {
+                if (t8.compare(CHAR_EX) || t8.compare(CHAR_DESC) || t8.compare(CHAR_DESCRIPTION)) {
                     skipScan = true;
                     skipSymbol = CHAR_AROBASE;
                 }

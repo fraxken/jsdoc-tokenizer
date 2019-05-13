@@ -38,7 +38,7 @@ for (const [token, value] of it) {
 ```
 
 ## API
-### scan(buf: Buffer): IterableIterator< [Symbol, Uint8Array | number | null] >
+### scan(buf: Buffer): IterableIterator< [Symbol, Uint8Array | number] >
 Scan (tokenize) JSDoc block. The scanner only take single instance of block (not build to detect start and end). To extract JSDoc block as buffer, please take a look at [jsdoc-extractor](https://github.com/fraxken/jsdoc-extractor).
 
 ### TOKENS

@@ -51,7 +51,7 @@ function isKeyword(t8) {
 /**
  * @typedef {Object} TokenRow
  * @property {Symbol} token
- * @property {Uint8Array | number | null} value
+ * @property {Uint8Array | number} value
  */
 
 /**

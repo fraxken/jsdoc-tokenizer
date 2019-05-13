@@ -5,7 +5,7 @@ declare namespace JSDocScanner {
         SYMBOL: Symbol
     }
 
-    export function scan(buf: Buffer): IterableIterator<[Symbol, Uint8Array | number | null]>;
+    export function scan(buf: Buffer): IterableIterator<[Symbol, Uint8Array | number]>;
     export const TOKENS: Tokens;
 }
 

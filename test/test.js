@@ -14,9 +14,9 @@ const { scan, TOKENS } = require("../");
  */
 function cleanStr(str) {
     str
-        .replace(/\r?\n|\r/, "")
-        .trim()
-        .normalize();
+        .split(/\r?\n|\r/)
+        .map((str) => str.trim().normalize())
+        .join("\n");
 }
 
 function assertToken(it, token, cp) {
@@ -78,6 +78,26 @@ avaTest("Parse JSDoc: @typedef", (assert) => {
 
     // eslint-disable-next-line
     assert.true(assertToken(it, TOKENS.IDENTIFIER, "console.log(\"hello world!\");"));
+    const { done } = it.next();
+    assert.true(done);
+});
+
+avaTest("Parse JSDoc: @desc", (assert) => {
+    const buf = Buffer.from(`/**
+    @var foo
+    @desc A multi-line
+    description
+    **/`);
+    const it = scan(buf);
+
+    assert.true(assertToken(it, TOKENS.SYMBOL, "\n"));
+    assert.true(assertToken(it, TOKENS.KEYWORD, "@var"));
+    assert.true(assertToken(it, TOKENS.IDENTIFIER, "foo"));
+    assert.true(assertToken(it, TOKENS.SYMBOL, "\n"));
+    assert.true(assertToken(it, TOKENS.KEYWORD, "@desc"));
+
+    // eslint-disable-next-line
+    assert.true(assertToken(it, TOKENS.IDENTIFIER, "A multi-line\ndescription"));
     const { done } = it.next();
     assert.true(done);
 });

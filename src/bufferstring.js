@@ -66,12 +66,7 @@ class BufferString {
      * @memberof BufferString#
      */
     get currValue() {
-        if (this.currLen === 0) {
-            return null;
-        }
-        const sliceLen = this.u8Arr[this.currLen - 1] === C_SPACE ? this.currLen - 1 : this.currLen;
-
-        return this.u8Arr.slice(0, sliceLen);
+        return this.u8Arr.slice(0, this.u8Arr[this.currLen - 1] === C_SPACE ? this.currLen - 1 : this.currLen);
     }
 
     /**

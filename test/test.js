@@ -122,3 +122,22 @@ avaTest("Parse JSDoc: @desc", (assert) => {
     const { done } = it.next();
     assert.true(done);
 });
+
+avaTest("Parse JSDoc: @summary wide char", (assert) => {
+    const buf = Buffer.from(`/**
+    @summary hello world!
+    @const name
+    **/`);
+    const it = scan(buf);
+
+    assert.true(assertToken(it, TOKENS.SYMBOL, "\n"));
+    assert.true(assertToken(it, TOKENS.KEYWORD, "@summary"));
+    assert.true(assertToken(it, TOKENS.IDENTIFIER, "hello world!"));
+    assert.true(assertToken(it, TOKENS.SYMBOL, "\n"));
+    assert.true(assertToken(it, TOKENS.KEYWORD, "@const"));
+    assert.true(assertToken(it, TOKENS.IDENTIFIER, "name"));
+    assert.true(assertToken(it, TOKENS.SYMBOL, "\n"));
+
+    const { done } = it.next();
+    assert.true(done);
+});

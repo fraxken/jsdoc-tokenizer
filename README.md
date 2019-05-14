@@ -54,5 +54,8 @@ interface Tokens {
 
 Tokens are exported in the module.
 
+## Caveats
+- There is a room for improvement on supporting more chars for Identifier.
+
 ## License
 MIT

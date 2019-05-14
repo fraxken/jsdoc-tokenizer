@@ -5,7 +5,7 @@
 /**
  * @func asciiSet
  * @memberof utils#
- * @param  {Array<number | [number, number]>} plages plages
+ * @param  {Array<number | string | [number, number]>} plages plages
  * @returns {Set<Number>}
  */
 function asciiSet(...plages) {
@@ -13,6 +13,10 @@ function asciiSet(...plages) {
     for (const plage of plages) {
         if (typeof plage === "number") {
             ret.add(plage);
+            continue;
+        }
+        else if (typeof plage === "string") {
+            ret.add(plage.charCodeAt(0));
             continue;
         }
 

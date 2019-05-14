@@ -70,9 +70,9 @@ function* scan(buf) {
         const char = buf[id];
         if (skipScan) {
             const isEndBlock = char === CHAR_SLASH && buf[id - 1] === CHAR_STAR;
-            skipB: if (char === skipSymbol || isEndBlock) {
-                if (char === CHAR_AROBASE && !isEndBlock && buf[id - 2] !== CHAR_STAR) {
-                    break skipB;
+            symbolHandler: if (char === skipSymbol || isEndBlock) {
+                if (char === CHAR_AROBASE && !isEndBlock && id >= 2 && buf[id - 2] !== CHAR_STAR) {
+                    break symbolHandler;
                 }
                 skipScan = false;
                 const currValue = isEndBlock ? t8.currValue.slice(0, -2) : t8.currValue;

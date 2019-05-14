@@ -55,7 +55,8 @@ interface Tokens {
 Tokens are exported in the module.
 
 ## Caveats
-- There is a room for improvement on supporting more chars for Identifier.
+- There is a room for improvement on supporting more chars for Identifier (Some are not supported in tag).
+- Example & Description tags are closed with `@` that must be preceded by `*\s`.
 
 ## License
 MIT

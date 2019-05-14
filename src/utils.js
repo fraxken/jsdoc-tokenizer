@@ -20,7 +20,7 @@ function asciiSet(...plages) {
             continue;
         }
 
-        for (let tid = plage[0]; tid < plage[1]; tid++) {
+        for (let tid = plage[0]; tid <= plage[1]; tid++) {
             ret.add(tid);
         }
     }

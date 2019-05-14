@@ -1,6 +1,3 @@
-// Require Node.js Dependencies
-const { EOL } = require("os");
-
 // Require Third-party Dependencies
 const avaTest = require("ava");
 

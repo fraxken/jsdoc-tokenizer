@@ -29,6 +29,7 @@ const WIDE_CHARS = asciiSet(
     "_", "-", "$", "'", "\"", "<", ">", "@", ".", "!", "?",
     "(", ")", "#", "%", "&", "+", "-", ":", ";", "^", "`", "|", "~"
 );
+const SKIP_CHARS = asciiSet(" ", "=", "{", "}", "[", "]");
 
 const SYMBOLS = new Set(["{", "}", "[", "]", "\n"].map((char) => char.charCodeAt(0)));
 const KEYWORDS = jsdocKeywords.map((key) => stringToChar(key));
@@ -83,9 +84,13 @@ function* scan(buf) {
                     yield [TOKENS.SYMBOL, skipSymbol];
                     skipShowSymbol = false;
                 }
+
+                if (SKIP_CHARS.has(char)) {
+                    continue;
+                }
             }
 
-            if (WIDE_CHARS.has(char)) {
+            if (WIDE_CHARS.has(char) || SKIP_CHARS.has(char)) {
                 t8.add(char);
             }
             continue;

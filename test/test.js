@@ -84,9 +84,9 @@ avaTest("Parse JSDoc: inline @typedef", (assert) => {
 
 avaTest("Parse JSDoc: @typedef", (assert) => {
     const buf = Buffer.from(`/**
-    @const name
-    @example
-    console.log("hello world!");
+    * @const name
+    * @example
+    * console.log("hello world!");
     **/`);
     const it = scan(buf);
 
@@ -98,16 +98,16 @@ avaTest("Parse JSDoc: @typedef", (assert) => {
     assert.true(assertToken(it, TOKENS.SYMBOL, "\n"));
 
     // eslint-disable-next-line
-    assert.true(assertToken(it, TOKENS.IDENTIFIER, "console.log(\"hello world!\");"));
+    assert.true(assertToken(it, TOKENS.IDENTIFIER, "* console.log(\"hello world!\");"));
     const { done } = it.next();
     assert.true(done);
 });
 
 avaTest("Parse JSDoc: @desc", (assert) => {
     const buf = Buffer.from(`/**
-    @var foo
-    @desc A multi-line
-    description
+    * @var foo
+    * @desc A multi-line
+    * description
     **/`);
     const it = scan(buf);
 
@@ -118,15 +118,15 @@ avaTest("Parse JSDoc: @desc", (assert) => {
     assert.true(assertToken(it, TOKENS.KEYWORD, "@desc"));
 
     // eslint-disable-next-line
-    assert.true(assertToken(it, TOKENS.IDENTIFIER, "A multi-line\ndescription"));
+    assert.true(assertToken(it, TOKENS.IDENTIFIER, "A multi-line\n* description"));
     const { done } = it.next();
     assert.true(done);
 });
 
 avaTest("Parse JSDoc: @summary wide char", (assert) => {
     const buf = Buffer.from(`/**
-    @summary hello world!
-    @const name
+    * @summary hello world!
+    * @const name
     **/`);
     const it = scan(buf);
 
@@ -134,6 +134,24 @@ avaTest("Parse JSDoc: @summary wide char", (assert) => {
     assert.true(assertToken(it, TOKENS.KEYWORD, "@summary"));
     assert.true(assertToken(it, TOKENS.IDENTIFIER, "hello world!"));
     assert.true(assertToken(it, TOKENS.SYMBOL, "\n"));
+    assert.true(assertToken(it, TOKENS.KEYWORD, "@const"));
+    assert.true(assertToken(it, TOKENS.IDENTIFIER, "name"));
+    assert.true(assertToken(it, TOKENS.SYMBOL, "\n"));
+
+    const { done } = it.next();
+    assert.true(done);
+});
+
+avaTest("Parse JSDoc: @desc end @", (assert) => {
+    const buf = Buffer.from(`/**
+    * @desc hello @fraxken world
+    * @const name
+    **/`);
+    const it = scan(buf);
+
+    assert.true(assertToken(it, TOKENS.SYMBOL, "\n"));
+    assert.true(assertToken(it, TOKENS.KEYWORD, "@desc"));
+    assert.true(assertToken(it, TOKENS.IDENTIFIER, "hello @fraxken world!"));
     assert.true(assertToken(it, TOKENS.KEYWORD, "@const"));
     assert.true(assertToken(it, TOKENS.IDENTIFIER, "name"));
     assert.true(assertToken(it, TOKENS.SYMBOL, "\n"));

@@ -70,7 +70,10 @@ function* scan(buf) {
         const char = buf[id];
         if (skipScan) {
             const isEndBlock = char === CHAR_SLASH && buf[id - 1] === CHAR_STAR;
-            if (char === skipSymbol || isEndBlock) {
+            skipB: if (char === skipSymbol || isEndBlock) {
+                if (char === CHAR_AROBASE && !isEndBlock && buf[id - 2] !== CHAR_STAR) {
+                    break skipB;
+                }
                 skipScan = false;
                 const currValue = isEndBlock ? t8.currValue.slice(0, -2) : t8.currValue;
                 t8.reset();
@@ -80,11 +83,11 @@ function* scan(buf) {
                     yield [TOKENS.SYMBOL, skipSymbol];
                     skipShowSymbol = false;
                 }
-
-                continue;
             }
 
-            t8.add(char);
+            if (WIDE_CHARS.has(char)) {
+                t8.add(char);
+            }
             continue;
         }
 

@@ -4,6 +4,7 @@ const is = require("@slimio/is");
 
 // Require Internal Dependencies
 const utils = require("../src/utils");
+const keywords = require("../src/keywords");
 
 avaTest("utils export", (assert) => {
     assert.true(is.plainObject(utils));
@@ -26,4 +27,11 @@ avaTest("asciiSet", (assert) => {
 
     const set2 = utils.asciiSet("$", 95);
     assert.deepEqual([...set2], [36, 95]);
+});
+
+avaTest("keywords must be an array of string", (assert) => {
+    assert.true(is.array(keywords));
+    for (const kw of keywords) {
+        assert.true(is.string(kw));
+    }
 });

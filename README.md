@@ -5,6 +5,7 @@
 ![dep](https://img.shields.io/david/fraxken/jsdoc-tokenizer.svg)
 ![size](https://img.shields.io/bundlephobia/min/jsdoc-tokenizer.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/fraxken/jsdoc-tokenizer/badge.svg?targetFile=package.json)](https://snyk.io/test/github/fraxken/jsdoc-tokenizer?targetFile=package.json)
+[![Build Status](https://travis-ci.com/fraxken/jsdoc-tokenizer.svg?branch=master)](https://travis-ci.com/fraxken/jsdoc-tokenizer)
 
 Tokenizer (Scanner) for JSDoc. This project only operate on/with Node.js Buffer and Uint8Array (No conversion to String required).
 

@@ -10,7 +10,7 @@
 Tokenizer (Scanner) for JSDoc. This project only operate on/with Node.js Buffer and Uint8Array (No conversion to String required).
 
 ## Requirements
-- Node.js v10 or higher
+- [Node.js](https://nodejs.org/en/) v10 or higher
 
 ## Getting Started
 

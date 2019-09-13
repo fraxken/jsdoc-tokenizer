@@ -22,6 +22,11 @@
         "scanner",
         "scan"
     ],
+    "files": [
+        "src",
+        "index.js",
+        "index.d.ts"
+    ],
     "author": "fraxken",
     "license": "MIT",
     "bugs": {

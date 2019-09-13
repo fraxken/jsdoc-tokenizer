@@ -1,12 +1,14 @@
+"use strict";
+
 /**
  * @namespace utils
  */
 
 /**
- * @func asciiSet
+ * @function asciiSet
  * @memberof utils#
  * @param  {Array<number | string | [number, number]>} plages plages
- * @returns {Set<Number>}
+ * @returns {Set<number>}
  */
 function asciiSet(...plages) {
     const ret = new Set();
@@ -29,9 +31,9 @@ function asciiSet(...plages) {
 }
 
 /**
- * @func stringToChar
+ * @function stringToChar
  * @memberof utils#
- * @param {!String} str string
+ * @param {!string} str string
  * @returns {Uint8Array}
  */
 function stringToChar(str) {

@@ -1,3 +1,5 @@
+"use strict";
+
 // Require Internal Dependencies
 const { asciiSet, stringToChar } = require("./src/utils");
 const jsdocKeywords = require("./src/keywords");
@@ -35,9 +37,9 @@ const SYMBOLS = new Set(["{", "}", "[", "]", "\n"].map((char) => char.charCodeAt
 const KEYWORDS = jsdocKeywords.map((key) => stringToChar(key));
 
 /**
- * @func isKeyword
+ * @function isKeyword
  * @param {!BufferString} t8 keyword as uint8array
- * @returns {Boolean}
+ * @returns {boolean}
  */
 function isKeyword(t8) {
     for (let id = 0; id < KEYWORDS.length; id++) {
@@ -50,16 +52,15 @@ function isKeyword(t8) {
 }
 
 /**
- * @typedef {Object} TokenRow
- * @property {Symbol} token
+ * @typedef {object} TokenRow
+ * @property {symbol} token
  * @property {Uint8Array | number} value
  */
 
 /**
  * @generator
- * @func scan
+ * @function scan
  * @param {!Buffer} buf buffer
- * @returns {IterableIterator<TokenRow>}
  */
 function* scan(buf) {
     const t8 = new BufferString();

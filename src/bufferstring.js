@@ -1,12 +1,11 @@
+"use strict";
+
 // CONSTANTS
 const C_SPACE = " ".charCodeAt(0);
 
-/**
- * @class BufferString
- */
 class BufferString {
     /**
-     * @constructor
+     * @class BufferString
      */
     constructor() {
         this.u8Arr = new Uint8Array(BufferString.DEFAULT_LEN);
@@ -14,9 +13,9 @@ class BufferString {
     }
 
     /**
-     * @method add
+     * @function add
      * @memberof BufferString#
-     * @param {!Number} char u8 char (0-255)
+     * @param {!number} char u8 char (0-255)
      * @returns {void}
      */
     add(char) {
@@ -32,10 +31,10 @@ class BufferString {
     }
 
     /**
-     * @method compare
+     * @function compare
      * @memberof BufferString#
      * @param {!Uint8Array} u8 Javascript Uint8Array
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     compare(u8) {
         if (this.currLen === 0 || this.currLen !== u8.byteLength) {
@@ -53,8 +52,9 @@ class BufferString {
 
     /**
      * @readonly
-     * @member {Number} length
+     * @member {number} length
      * @memberof BufferString#
+     * @returns {number}
      */
     get length() {
         return this.currLen;
@@ -64,13 +64,14 @@ class BufferString {
      * @readonly
      * @member {Buffer | null} currValue
      * @memberof BufferString#
+     * @returns {Buffer}
      */
     get currValue() {
         return this.u8Arr.slice(0, this.u8Arr[this.currLen - 1] === C_SPACE ? this.currLen - 1 : this.currLen);
     }
 
     /**
-     * @method reset
+     * @function reset
      * @memberof BufferString#
      * @returns {void}
      */
